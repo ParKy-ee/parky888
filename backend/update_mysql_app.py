@@ -1,4 +1,9 @@
 ﻿import os
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+APP_PATH = os.path.join(BASE_DIR, "service", "app.py")
+
+app_code = """import os
 import sys
 import time
 import asyncio
@@ -11,6 +16,7 @@ import ta
 import yfinance as yf
 import requests
 import pymysql
+from pymysql.constants import CLIENT
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 LOGS_DIR = os.path.join(BASE_DIR, "logs")
@@ -51,6 +57,7 @@ TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
 
 def get_db_connection():
+    """สร้างการเชื่อมต่อกับ MySQL Database พร้อม auto-reconnect"""
     try:
         return pymysql.connect(
             host=MYSQL_HOST,
@@ -68,6 +75,7 @@ def get_db_connection():
         return None
 
 def init_database():
+    """สร้างตารางใน MySQL อัตโนมัติถ้ายังไม่มี"""
     logger.info(f"[*] ตรวจสอบการเชื่อมต่อฐานข้อมูล MySQL ที่ {MYSQL_HOST}:{MYSQL_PORT}/{MYSQL_DATABASE}...")
     conn = get_db_connection()
     if not conn:
@@ -75,7 +83,7 @@ def init_database():
         return
 
     with conn.cursor() as cursor:
-        cursor.execute("""
+        cursor.execute('''
             CREATE TABLE IF NOT EXISTS signals (
                 id INT AUTO_INCREMENT PRIMARY KEY,
                 time DATETIME NOT NULL,
@@ -88,8 +96,8 @@ def init_database():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 INDEX idx_symbol_time (symbol, time)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-        """)
-        cursor.execute("""
+        ''')
+        cursor.execute('''
             CREATE TABLE IF NOT EXISTS active_positions (
                 symbol VARCHAR(20) PRIMARY KEY,
                 entry_date DATETIME NOT NULL,
@@ -100,8 +108,8 @@ def init_database():
                 status_note VARCHAR(50) DEFAULT 'INITIAL_SL',
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-        """)
-        cursor.execute("""
+        ''')
+        cursor.execute('''
             CREATE TABLE IF NOT EXISTS market_bars (
                 id BIGINT AUTO_INCREMENT PRIMARY KEY,
                 time DATETIME NOT NULL,
@@ -116,7 +124,7 @@ def init_database():
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 UNIQUE KEY uq_symbol_time (symbol, time)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-        """)
+        ''')
     conn.close()
     logger.info("✅ ฐานข้อมูล MySQL พร้อมใช้งานสมบูรณ์!")
 
@@ -235,11 +243,11 @@ class AITradingDaemon:
 
                 # บันทึก Bar ล่าสุดลง MySQL
                 try:
-                    cursor.execute("""
+                    cursor.execute('''
                         INSERT INTO market_bars (time, symbol, open, high, low, close, volume, rsi, atr)
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                         ON DUPLICATE KEY UPDATE close=VALUES(close), volume=VALUES(volume), rsi=VALUES(rsi), atr=VALUES(atr)
-                    """, (row["time"].strftime("%Y-%m-%d %H:%M:%S"), symbol, float(row["open"]), float(row["high"]), float(row["low"]), curr_price, int(row["volume"]), float(row["rsi_14"]), atr))
+                    ''', (row["time"].strftime("%Y-%m-%d %H:%M:%S"), symbol, float(row["open"]), float(row["high"]), float(row["low"]), curr_price, int(row["volume"]), float(row["rsi_14"]), atr))
                 except Exception as e:
                     logger.warning(f"Error saving bar {symbol}: {e}")
 
@@ -248,17 +256,17 @@ class AITradingDaemon:
                     cursor.execute("SELECT id FROM signals WHERE symbol = %s AND DATE(time) = CURDATE()", (symbol,))
                     if not cursor.fetchone():
                         logger.info(f"🔥 [BUY SIGNAL] ตรวจพบสัญญาณซื้อ {symbol} @ ${curr_price:.2f} (ความมั่นใจ {confidence*100:.1f}%)")
-                        cursor.execute("""
+                        cursor.execute('''
                             INSERT INTO signals (time, symbol, price, ai_confidence, sl_price, tp_price, action)
                             VALUES (%s, %s, %s, %s, %s, %s, %s)
-                        """, (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), symbol, curr_price, confidence, sl_price, tp_price, "BUY"))
+                        ''', (datetime.now().strftime("%Y-%m-%d %H:%M:%S"), symbol, curr_price, confidence, sl_price, tp_price, "BUY"))
 
                         alert_msg = (
-                            f"🚨 *AI Swing Trading Signal: ซื้อ {symbol}*\n"
-                            f"• ราคาปัจจุบัน: `${curr_price:.2f}`\n"
-                            f"• ความมั่นใจ AI: `{confidence*100:.1f}%`\n"
-                            f"• จุด Take Profit (เป้าหมาย): `${tp_price:.2f}` (+{((tp_price-curr_price)/curr_price)*100:.1f}%)\n"
-                            f"• จุด Stop Loss (คัตลอส): `${sl_price:.2f}` ({((sl_price-curr_price)/curr_price)*100:.1f}%)\n"
+                            f"🚨 *AI Swing Trading Signal: ซื้อ {symbol}*\\n"
+                            f"• ราคาปัจจุบัน: `${curr_price:.2f}`\\n"
+                            f"• ความมั่นใจ AI: `{confidence*100:.1f}%`\\n"
+                            f"• จุด Take Profit (เป้าหมาย): `${tp_price:.2f}` (+{((tp_price-curr_price)/curr_price)*100:.1f}%)\\n"
+                            f"• จุด Stop Loss (คัตลอส): `${sl_price:.2f}` ({((sl_price-curr_price)/curr_price)*100:.1f}%)\\n"
                             f"• บันทึกลง MySQL Database เรียบร้อย"
                         )
                         send_telegram_alert(alert_msg)
@@ -290,3 +298,9 @@ if __name__ == "__main__":
     init_database()
     daemon = AITradingDaemon()
     asyncio.run(daemon.start())
+"""
+
+with open(APP_PATH, "w", encoding="utf-8") as f:
+    f.write(app_code)
+
+print("[+] อัปเดต backend/service/app.py รองรับ MySQL สมบูรณ์!")

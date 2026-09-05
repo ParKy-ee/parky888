@@ -1,21 +1,46 @@
 version: '3.8'
 
 services:
+  mysql_db:
+    image: mysql:8.0
+    container_name: ai_trading_mysql
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-ai_trading_db}
+      MYSQL_USER: ${MYSQL_USER:-trading_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-trading_pass_123}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_secure_password_123}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    deploy:
+      resources:
+        limits:
+          memory: 350M
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD:-root_secure_password_123}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   ai_trading_bot:
     build: .
     container_name: ai_swing_trading_service
     restart: always
+    depends_on:
+      mysql_db:
+        condition: service_healthy
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs
+      - ./models:/app/models
     deploy:
       resources:
         limits:
-          cpus: '0.50'      # จำกัด CPU ไม่เกิน 0.5 core (ไม่แย่งเครื่อง)
-          memory: 256M      # จำกัด RAM ไม่เกิน 256 MB (เบามาก)
-    environment:
-      - SCAN_INTERVAL_MINUTES=5
-      - CONFIDENCE_THRESHOLD=0.38
-      - TELEGRAM_BOT_TOKEN=
-      - TELEGRAM_CHAT_ID=
-    volumes:
-      - ./database:/app/database
-      - ./logs:/app/logs
-      - ./models:/app/models
+          cpus: '0.50'
+          memory: 256M
+
+volumes:
+  mysql_data:
