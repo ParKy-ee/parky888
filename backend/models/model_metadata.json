@@ -1,0 +1,26 @@
+{
+  "model_type": "LightGBM Classifier",
+  "features": [
+    "return_1d",
+    "return_5d",
+    "return_20d",
+    "rsi_14",
+    "roc_12",
+    "macd_line",
+    "macd_signal",
+    "macd_hist",
+    "dist_ema_20",
+    "dist_ema_50",
+    "dist_ema_200",
+    "ema_trend_ratio",
+    "atr_14",
+    "atr_ratio",
+    "bb_pband",
+    "bb_width",
+    "adx_14",
+    "rvol",
+    "dist_to_20d_high"
+  ],
+  "optimal_threshold": 0.5,
+  "results": null
+}

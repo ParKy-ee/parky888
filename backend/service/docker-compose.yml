@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  ai_trading_bot:
+    build: .
+    container_name: ai_swing_trading_service
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'      # จำกัด CPU ไม่เกิน 0.5 core (ไม่แย่งเครื่อง)
+          memory: 256M      # จำกัด RAM ไม่เกิน 256 MB (เบามาก)
+    environment:
+      - SCAN_INTERVAL_MINUTES=5
+      - CONFIDENCE_THRESHOLD=0.38
+      - TELEGRAM_BOT_TOKEN=
+      - TELEGRAM_CHAT_ID=
+    volumes:
+      - ./database:/app/database
+      - ./logs:/app/logs
+      - ./models:/app/models

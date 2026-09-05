@@ -1,0 +1,8 @@
+block_rule,count,blocked,observation_only
+watch_observation,67,0,67
+stale_signal,13,13,0
+decision_not_allowed,50,50,0
+regime_gate,4,4,0
+portfolio_risk,9,9,0
+no_executable_price,7,7,0
+excessive_drift,3,3,0

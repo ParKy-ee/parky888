@@ -1,0 +1,8 @@
+pandas>=2.0.0
+numpy>=1.23.0
+lightgbm>=4.0.0
+scikit-learn>=1.2.0
+joblib>=1.2.0
+yfinance>=0.2.35
+ta>=0.10.2
+requests>=2.31.0

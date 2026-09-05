@@ -1,0 +1,27 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.yfinance_cache/
+
+# Node
+node_modules/
+dist/
+.next/
+
+# Logs & DBs
+*.log
+logs/
+backend/service/logs/
+backend/service/database/*.db
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายงานผลการเทรดพอร์ตจริง $500 USD (AI Swing Trader)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #090d16;
+            color: #e2e8f0;
+            font-family: 'Sarabun', ui-sans-serif, system-ui, sans-serif;
+        }
+        .card {
+            background: #131b2e;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="p-6 md:p-10 max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row md:items-center justify-between pb-8 border-b border-slate-800 gap-4">
+        <div>
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-950/80 border border-emerald-700 text-emerald-400 text-xs font-semibold mb-3">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                จำลองพอร์ต $500 USD: ทดสอบบนกราฟจริงย้อนหลัง
+            </div>
+            <h1 class="text-3xl font-extrabold tracking-tight text-white">รายงานผลการเทรดพอร์ต $500 USD (AI Swing Trader)</h1>
+            <p class="text-slate-400 text-sm mt-1">ทดสอบการเข้าซื้อขายจริงตามสัญญาณ AI ด้วยเงินตั้งต้น $500 พร้อมระบบ Trailing Stop</p>
+        </div>
+        <div class="text-left md:text-right">
+            <span class="text-xs text-slate-500 uppercase font-mono">สถานะพอร์ต</span>
+            <div class="text-sm font-semibold text-emerald-400">พอร์ตมีกำไรสุทธิ</div>
+            <span class="text-xs text-slate-500">เงินทุนเริ่มต้น $500 USD</span>
+        </div>
+    </div>
+
+    <!-- KPI Summary Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 my-8">
+        <div class="card p-5 border-emerald-900/50 bg-gradient-to-br from-[#131b2e] to-[#062d22]">
+            <div class="text-xs text-emerald-400 font-medium uppercase">มูลค่าพอร์ตสุทธิสุดท้าย</div>
+            <div class="text-3xl font-black text-emerald-400 mt-2 font-mono">$526.90</div>
+            <div class="text-xs text-slate-400 mt-1">กำไร/ขาดทุนสุทธิ: <b class="text-emerald-400">$+26.90 (+5.38%)</b></div>
+        </div>
+        <div class="card p-5">
+            <div class="text-xs text-slate-400 font-medium uppercase">อัตราความแม่นยำ (Win Rate)</div>
+            <div class="text-3xl font-black text-white mt-2 font-mono">52.4%</div>
+            <div class="text-xs text-slate-500 mt-1">ชนะ 11 ไม้ / แพ้ 10 ไม้</div>
+        </div>
+        <div class="card p-5">
+            <div class="text-xs text-slate-400 font-medium uppercase">Profit Factor</div>
+            <div class="text-3xl font-black text-sky-400 mt-2 font-mono">1.22 เท่า</div>
+            <div class="text-xs text-slate-500 mt-1">อัตราส่วนยอดกำไร / ขาดทุน</div>
+        </div>
+        <div class="card p-5">
+            <div class="text-xs text-slate-400 font-medium uppercase">จำนวนไม้ที่เทรดจริง</div>
+            <div class="text-3xl font-black text-amber-400 mt-2 font-mono">21 ไม้</div>
+            <div class="text-xs text-slate-500 mt-1">ถือครองเฉลี่ย 5.2 วันต่อไม้</div>
+        </div>
+    </div>
+
+    <!-- Equity Curve -->
+    <div class="card p-6 mb-8">
+        <div class="mb-4">
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                <span class="p-1.5 rounded-lg bg-emerald-950 border border-emerald-700 text-emerald-400 text-sm">📈</span>
+                กราฟเส้นมูลค่าเงินทุน $500 USD เติบโตจริงตามเวลา
+            </h2>
+            <p class="text-slate-300 text-sm mt-1">
+                แสดงการเพิ่มขึ้น/ลดลงของเงินทุน $500 ในแต่ละรอบการเข้าเทรดจริง
+            </p>
+        </div>
+        <div class="w-full overflow-hidden rounded-lg">
+            <div style="height:450px; width:100%;">                        <script>window.PlotlyConfig = {MathJaxConfig: 'local'};</script>
+        <script charset="utf-8" src="https://cdn.plot.ly/plotly-3.7.0.min.js" integrity="sha256-jvTGqxNp8AGWEcvNLVuKr+8j5dGe9Yw51LQkmDH+IYA=" crossorigin="anonymous"></script>                <div id="5c921f96-5b22-48f8-83eb-218ebf64499d" class="plotly-graph-div" style="height:100%; width:100%;"></div>            <script>                window.PLOTLYENV=window.PLOTLYENV || {};                                if (document.getElementById("5c921f96-5b22-48f8-83eb-218ebf64499d")) {                    Plotly.newPlot(                        "5c921f96-5b22-48f8-83eb-218ebf64499d",                        [{"fill":"tozeroy","fillcolor":"rgba(16, 185, 129, 0.08)","line":{"color":"#10b981","width":2.5},"marker":{"size":4},"mode":"lines+markers","name":"\u0e21\u0e39\u0e25\u0e04\u0e48\u0e32\u0e1e\u0e2d\u0e23\u0e4c\u0e15 ($ USD)","x":["2025-10-15","2025-10-16","2025-10-17","2025-10-20","2025-10-21","2025-10-22","2025-10-23","2025-10-24","2025-10-27","2025-10-28","2025-10-29","2025-10-30","2025-10-31","2025-11-03","2025-11-04","2025-11-05","2025-11-06","2025-11-07","2025-11-10","2025-11-11","2025-11-12","2025-11-13","2025-11-14","2025-11-17","2025-11-18","2025-11-19","2025-11-20","2025-11-21","2025-11-24","2025-11-25","2025-11-26","2025-11-28","2025-12-01","2025-12-02","2025-12-03","2025-12-04","2025-12-05","2025-12-08","2025-12-09","2025-12-10","2025-12-11","2025-12-12","2025-12-15","2025-12-16","2025-12-17","2025-12-18","2025-12-19","2025-12-22","2025-12-23","2025-12-24","2025-12-26","2025-12-29","2025-12-30","2025-12-31","2026-01-02","2026-01-05","2026-01-06","2026-01-07","2026-01-08","2026-01-09","2026-01-12","2026-01-13","2026-01-14","2026-01-15","2026-01-16","2026-01-20","2026-01-21","2026-01-22","2026-01-23","2026-01-26","2026-01-27","2026-01-28","2026-01-29","2026-01-30","2026-02-02","2026-02-03","2026-02-04","2026-02-05","2026-02-06","2026-02-09","2026-02-10","2026-02-11","2026-02-12","2026-02-13","2026-02-17","2026-02-18","2026-02-19","2026-02-20","2026-02-23","2026-02-24","2026-02-25","2026-02-26","2026-02-27","2026-03-02","2026-03-03","2026-03-04","2026-03-05","2026-03-06","2026-03-09","2026-03-10","2026-03-11","2026-03-12","2026-03-13","2026-03-16","2026-03-17","2026-03-18","2026-03-19","2026-03-20","2026-03-23","2026-03-24","2026-03-25","2026-03-26","2026-03-27","2026-03-30","2026-03-31","2026-04-01","2026-04-02","2026-04-06","2026-04-07","2026-04-08","2026-04-09","2026-04-10","2026-04-13","2026-04-14","2026-04-15","2026-04-16","2026-04-17","2026-04-20","2026-04-21","2026-04-22","2026-04-23","2026-04-24","2026-04-27","2026-04-28","2026-04-29","2026-04-30","2026-05-01","2026-05-04","2026-05-05","2026-05-06","2026-05-07","2026-05-08","2026-05-11","2026-05-12","2026-05-13","2026-05-14","2026-05-15","2026-05-18","2026-05-19","2026-05-20","2026-05-21","2026-05-22","2026-05-26","2026-05-27","2026-05-28","2026-05-29","2026-06-01","2026-06-02","2026-06-03","2026-06-04","2026-06-05","2026-06-08","2026-06-09","2026-06-10","2026-06-11","2026-06-12","2026-06-15","2026-06-16","2026-06-17","2026-06-18","2026-06-22","2026-06-23","2026-06-24","2026-06-25","2026-06-26","2026-06-29","2026-06-30","2026-07-01","2026-07-02","2026-07-06","2026-07-07","2026-07-08","2026-07-09","2026-07-10","2026-07-13","2026-07-14","2026-07-15","2026-07-16","2026-07-17","2026-07-20","2026-07-21","2026-07-22","2026-07-23","2026-07-24","2026-07-27","2026-07-28","2026-07-29","2026-07-30","2026-07-31","2026-08-03","2026-08-04","2026-08-05","2026-08-06","2026-08-07","2026-08-10","2026-08-11","2026-08-12","2026-08-13","2026-08-14"],"y":{"dtype":"f8","bdata":"AAAAAABAf0AAAAAAAEB\u002fQAAAAAAAQH9AAAAAAABAf0AAAAAAAEB\u002fQGsDtzNwtX5AawO3M3C1fkBrA7czcLV+QGsDtzNwtX5AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AwLR\u002fd1uyf0DAtH93W7J\u002fQMC0f3dbsn9AobIEvni6f0CgsgS+eLp\u002fQLQDUhiYwn9AtANSGJjCf0C0A1IYmMJ\u002fQJQB1161yn9AlAHXXrXKf0DAyHTN1tJ\u002fQMDIdM3W0n9AwMh0zdbSf0DAyHTN1tJ\u002fQE4PV0WZQn5ATg9XRZlCfkBOD1dFmUJ+QE4PV0WZQn5ATg9XRZlCfkBOD1dFmUJ+QE4PV0WZQn5AwhRjSrDzfkDCFGNKsPN+QMIUY0qw835A8suuXXxjfUDyy65dfGN9QCDt4QtV1HxAIO3hC1XUfEAg7eELVdR8QCDt4QtV1HxAIO3hC1XUfEAg7eELVdR8QCDt4QtV1HxAIO3hC1XUfEAg7eELVdR8QCDt4QtV1HxAIO3hC1XUfEAg7eELVdR8QCDt4QtV1HxAIO3hC1XUfEAg7eELVdR8QCDt4QtV1HxAIO3hC1XUfEAg7eELVdR8QCDt4QtV1HxAIO3hC1XUfEAg7eELVdR8QCDt4QtV1HxAIO3hC1XUfEAg7eELVdR8QCDt4QtV1HxAIO3hC1XUfEAg7eELVdR8QCDt4QtV1HxAIO3hC1XUfEAg7eELVdR8QCDt4QtV1HxAIO3hC1XUfEAg7eELVdR8QCDt4QtV1HxAIO3hC1XUfEAg7eELVdR8QCDt4QtV1HxAIO3hC1XUfEAg7eELVdR8QCDt4QtV1HxA2KbWCRXkfUDYptYJFeR9QNim1gkV5H1A2KbWCRXkfUDYptYJFeR9QNim1gkV5H1A2KbWCRXkfUDYptYJFeR9QNim1gkV5H1AAC8VebZMfUAALxV5tkx9QAAvFXm2TH1AAC8VebZMfUAALxV5tkx9QAAvFXm2TH1AAC8VebZMfUAALxV5tkx9QAAvFXm2TH1AAC8VebZMfUAALxV5tkx9QGhVLYhfF35AaFUtiF8XfkDey43az3uAQN7LjdrPe4BA3suN2s97gEDey43az3uAQN7LjdrPe4BA3suN2s97gEDey43az3uAQN7LjdrPe4BA3suN2s97gEDey43az3uAQN7LjdrPe4BA3suN2s97gEDey43az3uAQN7LjdrPe4BA3suN2s97gEDey43az3uAQN7LjdrPe4BA+uTvJyopgED65O8nKimAQPrk7ycqKYBA+uTvJyopgEAOBeFIl6d+QA4F4UiXp35AyDMXwWEzfkDIMxfBYTN+QMgzF8FhM35AyDMXwWEzfkDIMxfBYTN+QMgzF8FhM35AyDMXwWEzfkDIMxfBYTN+QMgzF8FhM35AyDMXwWEzfkDIMxfBYTN+QMgzF8FhM35AyDMXwWEzfkDIMxfBYTN+QMgzF8FhM35AyDMXwWEzfkDIMxfBYTN+QMgzF8FhM35AyDMXwWEzfkDIMxfBYTN+QMgzF8FhM35AyDMXwWEzfkDIMxfBYTN+QMgzF8FhM35AyDMXwWEzfkDIMxfBYTN+QMgzF8FhM35AyDMXwWEzfkDIMxfBYTN+QMgzF8FhM35AyDMXwWEzfkDIMxfBYTN+QMgzF8FhM35AyDMXwWEzfkDIMxfBYTN+QG\u002f8pJu9BYBAb\u002fykm70FgEBv\u002fKSbvQWAQG\u002f8pJu9BYBAb\u002fykm70FgEBv\u002fKSbvQWAQG\u002f8pJu9BYBAb\u002fykm70FgEBv\u002fKSbvQWAQG\u002f8pJu9BYBAb\u002fykm70FgEAUvgcaPXeAQA=="},"type":"scatter"}],                        {"template":{"data":{"barpolar":[{"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"barpolar"}],"bar":[{"error_x":{"color":"#f2f5fa"},"error_y":{"color":"#f2f5fa"},"marker":{"line":{"color":"rgb(17,17,17)","width":0.5},"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"bar"}],"carpet":[{"aaxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"baxis":{"endlinecolor":"#A2B1C6","gridcolor":"#506784","linecolor":"#506784","minorgridcolor":"#506784","startlinecolor":"#A2B1C6"},"type":"carpet"}],"choropleth":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"choropleth"}],"contourcarpet":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"contourcarpet"}],"contour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"contour"}],"heatmap":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"heatmap"}],"histogram2dcontour":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2dcontour"}],"histogram2d":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"histogram2d"}],"histogram":[{"marker":{"pattern":{"fillmode":"overlay","size":10,"solidity":0.2}},"type":"histogram"}],"mesh3d":[{"colorbar":{"outlinewidth":0,"ticks":""},"type":"mesh3d"}],"parcoords":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"parcoords"}],"pie":[{"automargin":true,"type":"pie"}],"scatter3d":[{"line":{"colorbar":{"outlinewidth":0,"ticks":""}},"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatter3d"}],"scattercarpet":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattercarpet"}],"scattergeo":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattergeo"}],"scattergl":[{"marker":{"line":{"color":"#283442"}},"type":"scattergl"}],"scattermapbox":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermapbox"}],"scattermap":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scattermap"}],"scatterpolargl":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolargl"}],"scatterpolar":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterpolar"}],"scatter":[{"marker":{"line":{"color":"#283442"}},"type":"scatter"}],"scatterternary":[{"marker":{"colorbar":{"outlinewidth":0,"ticks":""}},"type":"scatterternary"}],"surface":[{"colorbar":{"outlinewidth":0,"ticks":""},"colorscale":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"type":"surface"}],"table":[{"cells":{"fill":{"color":"#506784"},"line":{"color":"rgb(17,17,17)"}},"header":{"fill":{"color":"#2a3f5f"},"line":{"color":"rgb(17,17,17)"}},"type":"table"}]},"layout":{"annotationdefaults":{"arrowcolor":"#f2f5fa","arrowhead":0,"arrowwidth":1},"autotypenumbers":"strict","coloraxis":{"colorbar":{"outlinewidth":0,"ticks":""}},"colorscale":{"diverging":[[0,"#8e0152"],[0.1,"#c51b7d"],[0.2,"#de77ae"],[0.3,"#f1b6da"],[0.4,"#fde0ef"],[0.5,"#f7f7f7"],[0.6,"#e6f5d0"],[0.7,"#b8e186"],[0.8,"#7fbc41"],[0.9,"#4d9221"],[1,"#276419"]],"sequential":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]],"sequentialminus":[[0.0,"#0d0887"],[0.1111111111111111,"#46039f"],[0.2222222222222222,"#7201a8"],[0.3333333333333333,"#9c179e"],[0.4444444444444444,"#bd3786"],[0.5555555555555556,"#d8576b"],[0.6666666666666666,"#ed7953"],[0.7777777777777778,"#fb9f3a"],[0.8888888888888888,"#fdca26"],[1.0,"#f0f921"]]},"colorway":["#636efa","#EF553B","#00cc96","#ab63fa","#FFA15A","#19d3f3","#FF6692","#B6E880","#FF97FF","#FECB52"],"font":{"color":"#f2f5fa"},"geo":{"bgcolor":"rgb(17,17,17)","lakecolor":"rgb(17,17,17)","landcolor":"rgb(17,17,17)","showlakes":true,"showland":true,"subunitcolor":"#506784"},"hoverlabel":{"align":"left"},"hovermode":"closest","mapbox":{"style":"dark"},"paper_bgcolor":"rgb(17,17,17)","plot_bgcolor":"rgb(17,17,17)","polar":{"angularaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","radialaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"scene":{"xaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"yaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"},"zaxis":{"backgroundcolor":"rgb(17,17,17)","gridcolor":"#506784","gridwidth":2,"linecolor":"#506784","showbackground":true,"ticks":"","zerolinecolor":"#C8D4E3"}},"shapedefaults":{"line":{"color":"#f2f5fa"}},"sliderdefaults":{"bgcolor":"#C8D4E3","bordercolor":"rgb(17,17,17)","borderwidth":1,"tickwidth":0},"ternary":{"aaxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"baxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""},"bgcolor":"rgb(17,17,17)","caxis":{"gridcolor":"#506784","linecolor":"#506784","ticks":""}},"title":{"x":0.05},"updatemenudefaults":{"bgcolor":"#506784","borderwidth":0},"xaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2},"yaxis":{"automargin":true,"gridcolor":"#283442","linecolor":"#506784","ticks":"","title":{"standoff":15},"zerolinecolor":"#283442","zerolinewidth":2}}},"shapes":[{"line":{"color":"#94a3b8","dash":"dash"},"type":"line","x0":0,"x1":1,"xref":"x domain","y0":500.0,"y1":500.0,"yref":"y"}],"annotations":[{"showarrow":false,"text":"\u0e40\u0e07\u0e34\u0e19\u0e17\u0e38\u0e19\u0e40\u0e23\u0e34\u0e48\u0e21\u0e15\u0e49\u0e19 $500","x":1,"xanchor":"right","xref":"x domain","y":500.0,"yanchor":"bottom","yref":"y"}],"xaxis":{"title":{"text":"\u0e27\u0e31\u0e19\u0e17\u0e35\u0e48"},"gridcolor":"#1e293b"},"yaxis":{"title":{"text":"\u0e21\u0e39\u0e25\u0e04\u0e48\u0e32\u0e1e\u0e2d\u0e23\u0e4c\u0e15 ($ USD)"},"gridcolor":"#1e293b"},"margin":{"l":40,"r":40,"t":60,"b":40},"paper_bgcolor":"rgba(0,0,0,0)","plot_bgcolor":"#0f172a","title":{"text":"\u003cb\u003e\u0e01\u0e23\u0e32\u0e1f\u0e01\u0e32\u0e23\u0e40\u0e15\u0e34\u0e1a\u0e42\u0e15\u0e02\u0e2d\u0e07\u0e1e\u0e2d\u0e23\u0e4c\u0e15 $500 USD (Equity Curve)\u003c\u002fb\u003e"},"height":450},                        {"responsive": true}                    )                };            </script>        </div>
+        </div>
+    </div>
+
+    <!-- Trade History Table -->
+    <div class="card p-6 mb-8">
+        <h2 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
+            <span>📋</span> ประวัติการเข้าซื้อขายทุกออเดอร์ของเงิน $500
+        </h2>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="border-b border-slate-700 text-xs text-slate-400 uppercase">
+                        <th class="py-2">ชื่อหุ้น</th>
+                        <th class="py-2">วันที่เข้าซื้อ</th>
+                        <th class="py-2">วันที่ปิดออเดอร์</th>
+                        <th class="py-2">ราคาซื้อ ($)</th>
+                        <th class="py-2">ราคาขาย ($)</th>
+                        <th class="py-2">เงินที่ลง ($)</th>
+                        <th class="py-2">ผลตอบแทน</th>
+                        <th class="py-2">เหตุผลการปิดออเดอร์</th>
+                        <th class="py-2">ผลลัพธ์</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">NFLX</td>
+            <td class="py-2.5 text-slate-400">2025-10-20</td>
+            <td class="py-2.5 text-slate-400">2025-10-22 (2 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$123.86</td>
+            <td class="py-2.5 text-slate-300 font-mono">$119.57</td>
+            <td class="py-2.5 text-slate-400 font-mono">$250.00</td>
+            <td class="py-2.5 text-rose-400 font-bold font-mono">-3.46% ($-8.66)</td>
+            <td class="py-2.5 text-slate-400">STOP (INITIAL_SL)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-rose-950 text-rose-400 border border-rose-700">ขาดทุน (LOSS)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">MSFT</td>
+            <td class="py-2.5 text-slate-400">2025-10-16</td>
+            <td class="py-2.5 text-slate-400">2025-10-28 (8 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$511.61</td>
+            <td class="py-2.5 text-slate-300 font-mono">$543.96</td>
+            <td class="py-2.5 text-slate-400 font-mono">$250.00</td>
+            <td class="py-2.5 text-emerald-400 font-bold font-mono">+6.32% ($+15.81)</td>
+            <td class="py-2.5 text-slate-400">TAKE_PROFIT (+12% ถึง +20%)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-700">กำไร (WIN)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">AMZN</td>
+            <td class="py-2.5 text-slate-400">2025-12-19</td>
+            <td class="py-2.5 text-slate-400">2026-01-02 (8 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$227.35</td>
+            <td class="py-2.5 text-slate-300 font-mono">$227.80</td>
+            <td class="py-2.5 text-slate-400 font-mono">$253.57</td>
+            <td class="py-2.5 text-emerald-400 font-bold font-mono">+0.20% ($+0.51)</td>
+            <td class="py-2.5 text-slate-400">STOP (BREAKEVEN_LOCKED)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-700">กำไร (WIN)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">AMZN</td>
+            <td class="py-2.5 text-slate-400">2026-01-05</td>
+            <td class="py-2.5 text-slate-400">2026-01-06 (1 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$233.06</td>
+            <td class="py-2.5 text-slate-300 font-mono">$233.53</td>
+            <td class="py-2.5 text-slate-400 font-mono">$253.83</td>
+            <td class="py-2.5 text-emerald-400 font-bold font-mono">+0.20% ($+0.51)</td>
+            <td class="py-2.5 text-slate-400">STOP (BREAKEVEN_LOCKED)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-700">กำไร (WIN)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">QCOM</td>
+            <td class="py-2.5 text-slate-400">2025-12-24</td>
+            <td class="py-2.5 text-slate-400">2026-01-09 (10 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$174.77</td>
+            <td class="py-2.5 text-slate-300 font-mono">$175.12</td>
+            <td class="py-2.5 text-slate-400 font-mono">$253.57</td>
+            <td class="py-2.5 text-emerald-400 font-bold font-mono">+0.20% ($+0.51)</td>
+            <td class="py-2.5 text-slate-400">STOP (BREAKEVEN_LOCKED)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-700">กำไร (WIN)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">AMZN</td>
+            <td class="py-2.5 text-slate-400">2026-01-06</td>
+            <td class="py-2.5 text-slate-400">2026-01-13 (5 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$240.93</td>
+            <td class="py-2.5 text-slate-300 font-mono">$241.41</td>
+            <td class="py-2.5 text-slate-400 font-mono">$254.08</td>
+            <td class="py-2.5 text-emerald-400 font-bold font-mono">+0.20% ($+0.51)</td>
+            <td class="py-2.5 text-slate-400">STOP (BREAKEVEN_LOCKED)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-700">กำไร (WIN)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">NVDA</td>
+            <td class="py-2.5 text-slate-400">2026-01-13</td>
+            <td class="py-2.5 text-slate-400">2026-01-20 (4 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$185.81</td>
+            <td class="py-2.5 text-slate-300 font-mono">$178.06</td>
+            <td class="py-2.5 text-slate-400 font-mono">$254.59</td>
+            <td class="py-2.5 text-rose-400 font-bold font-mono">-4.17% ($-10.62)</td>
+            <td class="py-2.5 text-slate-400">STOP (INITIAL_SL)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-rose-950 text-rose-400 border border-rose-700">ขาดทุน (LOSS)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">AVGO</td>
+            <td class="py-2.5 text-slate-400">2026-01-16</td>
+            <td class="py-2.5 text-slate-400">2026-01-20 (1 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$351.71</td>
+            <td class="py-2.5 text-slate-300 font-mono">$331.82</td>
+            <td class="py-2.5 text-slate-400 font-mono">$254.59</td>
+            <td class="py-2.5 text-rose-400 font-bold font-mono">-5.66% ($-14.40)</td>
+            <td class="py-2.5 text-slate-400">STOP (INITIAL_SL)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-rose-950 text-rose-400 border border-rose-700">ขาดทุน (LOSS)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">NVDA</td>
+            <td class="py-2.5 text-slate-400">2026-01-20</td>
+            <td class="py-2.5 text-slate-400">2026-01-29 (7 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$178.07</td>
+            <td class="py-2.5 text-slate-300 font-mono">$186.21</td>
+            <td class="py-2.5 text-slate-400 font-mono">$242.08</td>
+            <td class="py-2.5 text-emerald-400 font-bold font-mono">+4.57% ($+11.07)</td>
+            <td class="py-2.5 text-slate-400">STOP (TRAILING_STOP)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-700">กำไร (WIN)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">AVGO</td>
+            <td class="py-2.5 text-slate-400">2026-01-20</td>
+            <td class="py-2.5 text-slate-400">2026-02-03 (10 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$332.60</td>
+            <td class="py-2.5 text-slate-300 font-mono">$312.00</td>
+            <td class="py-2.5 text-slate-400 font-mono">$242.08</td>
+            <td class="py-2.5 text-rose-400 font-bold font-mono">-6.19% ($-15.00)</td>
+            <td class="py-2.5 text-slate-400">STOP (INITIAL_SL)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-rose-950 text-rose-400 border border-rose-700">ขาดทุน (LOSS)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">NVDA</td>
+            <td class="py-2.5 text-slate-400">2026-01-29</td>
+            <td class="py-2.5 text-slate-400">2026-02-03 (3 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$192.51</td>
+            <td class="py-2.5 text-slate-300 font-mono">$184.72</td>
+            <td class="py-2.5 text-slate-400 font-mono">$247.62</td>
+            <td class="py-2.5 text-rose-400 font-bold font-mono">-4.05% ($-10.02)</td>
+            <td class="py-2.5 text-slate-400">STOP (INITIAL_SL)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-rose-950 text-rose-400 border border-rose-700">ขาดทุน (LOSS)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">AMZN</td>
+            <td class="py-2.5 text-slate-400">2026-02-03</td>
+            <td class="py-2.5 text-slate-400">2026-02-05 (2 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$238.62</td>
+            <td class="py-2.5 text-slate-300 font-mono">$229.54</td>
+            <td class="py-2.5 text-slate-400 font-mono">$235.11</td>
+            <td class="py-2.5 text-rose-400 font-bold font-mono">-3.81% ($-8.95)</td>
+            <td class="py-2.5 text-slate-400">STOP (INITIAL_SL)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-rose-950 text-rose-400 border border-rose-700">ขาดทุน (LOSS)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">NFLX</td>
+            <td class="py-2.5 text-slate-400">2026-03-19</td>
+            <td class="py-2.5 text-slate-400">2026-04-06 (11 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$91.74</td>
+            <td class="py-2.5 text-slate-300 font-mono">$98.50</td>
+            <td class="py-2.5 text-slate-400 font-mono">$230.64</td>
+            <td class="py-2.5 text-emerald-400 font-bold font-mono">+7.36% ($+16.98)</td>
+            <td class="py-2.5 text-slate-400">STOP (TRAILING_STOP)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-700">กำไร (WIN)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">NFLX</td>
+            <td class="py-2.5 text-slate-400">2026-04-14</td>
+            <td class="py-2.5 text-slate-400">2026-04-17 (3 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$106.28</td>
+            <td class="py-2.5 text-slate-300 font-mono">$102.08</td>
+            <td class="py-2.5 text-slate-400 font-mono">$239.13</td>
+            <td class="py-2.5 text-rose-400 font-bold font-mono">-3.96% ($-9.46)</td>
+            <td class="py-2.5 text-slate-400">STOP (INITIAL_SL)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-rose-950 text-rose-400 border border-rose-700">ขาดทุน (LOSS)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">AMD</td>
+            <td class="py-2.5 text-slate-400">2026-04-28</td>
+            <td class="py-2.5 text-slate-400">2026-05-04 (4 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$323.21</td>
+            <td class="py-2.5 text-slate-300 font-mono">$340.68</td>
+            <td class="py-2.5 text-slate-400 font-mono">$234.40</td>
+            <td class="py-2.5 text-emerald-400 font-bold font-mono">+5.40% ($+12.67)</td>
+            <td class="py-2.5 text-slate-400">STOP (TRAILING_STOP)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-700">กำไร (WIN)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">AMD</td>
+            <td class="py-2.5 text-slate-400">2026-05-04</td>
+            <td class="py-2.5 text-slate-400">2026-05-06 (2 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$341.54</td>
+            <td class="py-2.5 text-slate-300 font-mono">$406.83</td>
+            <td class="py-2.5 text-slate-400 font-mono">$240.73</td>
+            <td class="py-2.5 text-emerald-400 font-bold font-mono">+19.12% ($+46.02)</td>
+            <td class="py-2.5 text-slate-400">TAKE_PROFIT (+12% ถึง +20%)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-700">กำไร (WIN)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">GOOGL</td>
+            <td class="py-2.5 text-slate-400">2026-05-20</td>
+            <td class="py-2.5 text-slate-400">2026-06-01 (7 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$388.91</td>
+            <td class="py-2.5 text-slate-300 font-mono">$373.68</td>
+            <td class="py-2.5 text-slate-400 font-mono">$263.74</td>
+            <td class="py-2.5 text-rose-400 font-bold font-mono">-3.92% ($-10.33)</td>
+            <td class="py-2.5 text-slate-400">STOP (INITIAL_SL)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-rose-950 text-rose-400 border border-rose-700">ขาดทุน (LOSS)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">QCOM</td>
+            <td class="py-2.5 text-slate-400">2026-05-28</td>
+            <td class="py-2.5 text-slate-400">2026-06-05 (6 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$243.29</td>
+            <td class="py-2.5 text-slate-300 font-mono">$218.69</td>
+            <td class="py-2.5 text-slate-400 font-mono">$263.74</td>
+            <td class="py-2.5 text-rose-400 font-bold font-mono">-10.11% ($-26.67)</td>
+            <td class="py-2.5 text-slate-400">STOP (INITIAL_SL)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-rose-950 text-rose-400 border border-rose-700">ขาดทุน (LOSS)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">AAPL</td>
+            <td class="py-2.5 text-slate-400">2026-06-05</td>
+            <td class="py-2.5 text-slate-400">2026-06-09 (2 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$307.34</td>
+            <td class="py-2.5 text-slate-300 font-mono">$298.24</td>
+            <td class="py-2.5 text-slate-400 font-mono">$245.24</td>
+            <td class="py-2.5 text-rose-400 font-bold font-mono">-2.96% ($-7.26)</td>
+            <td class="py-2.5 text-slate-400">STOP (INITIAL_SL)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-rose-950 text-rose-400 border border-rose-700">ขาดทุน (LOSS)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">MSFT</td>
+            <td class="py-2.5 text-slate-400">2026-07-27</td>
+            <td class="py-2.5 text-slate-400">2026-07-30 (3 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$389.10</td>
+            <td class="py-2.5 text-slate-300 font-mono">$436.62</td>
+            <td class="py-2.5 text-slate-400 font-mono">$241.61</td>
+            <td class="py-2.5 text-emerald-400 font-bold font-mono">+12.21% ($+29.51)</td>
+            <td class="py-2.5 text-slate-400">TAKE_PROFIT (+12% ถึง +20%)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-700">กำไร (WIN)</span></td>
+        </tr>
+        
+        <tr class="border-b border-slate-800 text-xs">
+            <td class="py-2.5 font-bold text-white">AVGO</td>
+            <td class="py-2.5 text-slate-400">2026-07-31</td>
+            <td class="py-2.5 text-slate-400">2026-08-14 (10 วัน)</td>
+            <td class="py-2.5 text-slate-300 font-mono">$389.28</td>
+            <td class="py-2.5 text-slate-300 font-mono">$410.82</td>
+            <td class="py-2.5 text-slate-400 font-mono">$256.36</td>
+            <td class="py-2.5 text-emerald-400 font-bold font-mono">+5.53% ($+14.19)</td>
+            <td class="py-2.5 text-slate-400">STOP (TRAILING_STOP)</td>
+            <td class="py-2.5"><span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-950 text-emerald-400 border border-emerald-700">กำไร (WIN)</span></td>
+        </tr>
+        
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

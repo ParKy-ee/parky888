@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Trading Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent: #38bdf8;
+            --accent-hover: #0ea5e9;
+            --success: #22c55e;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --border: #334155;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding-bottom: 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, #38bdf8, #818cf8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .status-on { background: var(--success); box-shadow: 0 0 8px var(--success); }
+        .status-off { background: var(--danger); }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 0.75rem;
+            padding: 1.25rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .card-value {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .value-up { color: var(--success); }
+        .value-down { color: var(--danger); }
+
+        .section-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn-primary:hover { background: var(--accent-hover); }
+
+        .btn-secondary {
+            background: transparent;
+            border-color: var(--border);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover { background: var(--border); }
+
+        .btn-danger {
+            background: transparent;
+            border-color: var(--danger);
+            color: var(--danger);
+        }
+
+        .btn-danger:hover { background: var(--danger); color: white; }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.875rem;
+        }
+
+        th {
+            text-align: left;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td { border-bottom: none; }
+
+        .badge {
+            padding: 0.125rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .badge-long { background: rgba(34, 197, 94, 0.1); color: var(--success); }
+        .badge-short { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+        .badge-ok { background: rgba(34, 197, 94, 0.1); color: var(--success); }
+        .badge-error { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+
+        #toast-container {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 50;
+        }
+
+        .toast {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 1rem 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            margin-top: 0.75rem;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        .loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Prototype Dashboard</h1>
+            <div id="live-service-status" class="status-badge">
+                <span class="status-dot"></span>
+                <span class="status-text">Checking Service...</span>
+            </div>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <div class="card-label">Net Return</div>
+                <div id="stat-return" class="card-value">0.00%</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Win Rate</div>
+                <div id="stat-winrate" class="card-value">0.0%</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Open Trades</div>
+                <div id="stat-open" class="card-value">0</div>
+            </div>
+            <div class="card">
+                <div class="card-label">Closed Trades</div>
+                <div id="stat-closed" class="card-value">0</div>
+            </div>
+        </div>
+
+        <div class="grid" style="grid-template-columns: 2fr 1fr;">
+            <div class="card">
+                <div class="section-title">
+                    Open Trades
+                    <div class="btn-group">
+                        <button class="btn-secondary" onclick="fetchData()">Refresh</button>
+                    </div>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Symbol</th>
+                                <th>Direction</th>
+                                <th>Entry Price</th>
+                                <th>Current</th>
+                                <th>Profit %</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="open-trades-body">
+                            <tr><td colspan="6" style="text-align: center;">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="section-title">Actions</div>
+                <div class="btn-group" style="flex-direction: column;">
+                    <button id="btn-run" class="btn-primary" onclick="runPrototype(false)">Run Standard Cycle</button>
+                    <button id="btn-run-models" class="btn-secondary" onclick="runPrototype(true)">Run Models + Cycle</button>
+                    <button id="btn-live-toggle" class="btn-secondary" onclick="toggleLiveService()">Start Live Service</button>
+                </div>
+                <div style="margin-top: 2rem;">
+                    <div class="card-label">Health Status</div>
+                    <div id="health-info" style="font-size: 0.875rem;">
+                        Checking health...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 2rem;">
+            <div class="section-title">Latest AI Signals</div>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Market</th>
+                            <th>Symbol</th>
+                            <th>Bias</th>
+                            <th>Decision</th>
+                            <th>Score</th>
+                            <th>Confidence</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody id="signals-body">
+                        <tr><td colspan="8" style="text-align: center;">Waiting for signals...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="section-title">Run History</div>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Time</th>
+                            <th>Source</th>
+                            <th>Status</th>
+                            <th>Models</th>
+                            <th>Duration</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-body">
+                        <tr><td colspan="5" style="text-align: center;">Loading...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script>
+        // API Configuration - Targeting Next.js Server
+        const API_BASE = 'http://localhost:3000';
+        
+        async function fetchData() {
+            try {
+                const res = await fetch(`${API_BASE}/api/prototype/status`);
+                if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                const data = await res.json();
+                updateUI(data);
+            } catch (err) {
+                console.error('Fetch error:', err);
+                showToast('Cannot connect to Next.js API. Run "npm run dev" in fontend folder.', 'error');
+            }
+        }
+
+        function updateUI(data) {
+            // Stats
+            const summary = data.summary;
+            document.getElementById('stat-return').textContent = summary.total_net_return_pct + '%';
+            document.getElementById('stat-return').className = 'card-value ' + (parseFloat(summary.total_net_return_pct) >= 0 ? 'value-up' : 'value-down');
+            document.getElementById('stat-winrate').textContent = summary.winrate_pct + '%';
+            document.getElementById('stat-open').textContent = data.openTrades.length;
+            document.getElementById('stat-closed').textContent = summary.closed_trades;
+
+            // Live Service Status
+            const statusEl = document.getElementById('live-service-status');
+            const dot = statusEl.querySelector('.status-dot');
+            const text = statusEl.querySelector('.status-text');
+            const toggleBtn = document.getElementById('btn-live-toggle');
+
+            if (data.liveServiceRunning) {
+                dot.className = 'status-dot status-on';
+                text.textContent = 'Live Service Running';
+                toggleBtn.textContent = 'Stop Live Service';
+                toggleBtn.className = 'btn-danger';
+            } else {
+                dot.className = 'status-dot status-off';
+                text.textContent = 'Live Service Stopped';
+                toggleBtn.textContent = 'Start Live Service';
+                toggleBtn.className = 'btn-primary';
+            }
+
+            // Open Trades
+            const openBody = document.getElementById('open-trades-body');
+            if (data.openTrades.length === 0) {
+                openBody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-secondary);">No open trades</td></tr>';
+            } else {
+                openBody.innerHTML = data.openTrades.map(t => {
+                    const entry = parseFloat(t.entry_price);
+                    return `
+                        <tr>
+                            <td><strong>${t.symbol}</strong></td>
+                            <td><span class="badge badge-${t.direction.toLowerCase()}">${t.direction}</span></td>
+                            <td>${t.entry_price}</td>
+                            <td>${t.last_market_source || '---'}</td>
+                            <td>---</td>
+                            <td>${new Date(t.entry_time).toLocaleTimeString()}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+
+            // History
+            const histBody = document.getElementById('history-body');
+            histBody.innerHTML = (data.runHistory || []).map(h => {
+                const duration = Math.round((new Date(h.finishedAt) - new Date(h.startedAt)) / 1000);
+                return `
+                    <tr>
+                        <td>${new Date(h.startedAt).toLocaleString()}</td>
+                        <td>${h.runSource || 'manual'}</td>
+                        <td><span class="badge badge-${h.status.toLowerCase()}">${h.status}</span></td>
+                        <td>${h.runModels ? 'Yes' : 'No'}</td>
+                        <td>${duration}s</td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Health
+            const health = data.health;
+            document.getElementById('health-info').innerHTML = `
+                <div style="margin-bottom: 0.5rem;">CSV Writable: <span class="${health.decisionCsvWritable ? 'value-up' : 'value-down'}">${health.decisionCsvWritable ? 'OK' : 'Locked'}</span></div>
+                <div style="margin-bottom: 0.5rem;">Schema Match: <span class="${health.headerSchemaMatch ? 'value-up' : 'value-down'}">${health.headerSchemaMatch ? 'Yes' : 'No'}</span></div>
+                <div style="margin-bottom: 0.5rem;">Stale Locks: ${health.staleLocks.length}</div>
+            `;
+
+            // Signals
+            const signalsBody = document.getElementById('signals-body');
+            const allSignals = [
+                ...(data.forexSignals || []),
+                ...(data.cryptoSignals || [])
+            ].sort((a, b) => new Date(b.ingested_at) - new Date(a.ingested_at))
+             .slice(0, 15); // Show last 15 signals
+
+            if (allSignals.length === 0) {
+                signalsBody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-secondary);">No signals found</td></tr>';
+            } else {
+                signalsBody.innerHTML = allSignals.map(s => `
+                    <tr>
+                        <td style="font-size: 0.75rem; color: var(--text-secondary);">${new Date(s.ingested_at).toLocaleTimeString()}</td>
+                        <td><span style="font-size: 0.75rem; opacity: 0.7;">${s.market.toUpperCase()}</span></td>
+                        <td><strong>${s.symbol}</strong></td>
+                        <td><span class="badge badge-${s.final_bias.toLowerCase()}">${s.final_bias}</span></td>
+                        <td><span style="font-size: 0.75rem;">${s.decision}</span></td>
+                        <td>${s.final_score}</td>
+                        <td>${s.confidence_pct}%</td>
+                        <td>${s.price || s.entry_price || '---'}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+
+        async function runPrototype(runModels) {
+            const btn = runModels ? document.getElementById('btn-run-models') : document.getElementById('btn-run');
+            const originalText = btn.textContent;
+            btn.textContent = 'Running...';
+            btn.classList.add('loading');
+
+            try {
+                showToast(`Starting cycle ${runModels ? '(with models)' : ''}...`);
+                const res = await fetch(`${API_BASE}/api/prototype/run`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ runModels })
+                });
+                const result = await res.json();
+                if (result.status === 'OK') {
+                    showToast('Cycle completed successfully!', 'success');
+                } else {
+                    showToast('Cycle failed: ' + (result.error || result.message), 'error');
+                }
+            } catch (err) {
+                console.error('Run error:', err);
+                showToast('Failed to trigger run', 'error');
+            } finally {
+                btn.textContent = originalText;
+                btn.classList.remove('loading');
+                fetchData();
+            }
+        }
+
+        async function toggleLiveService() {
+            const statusRes = await fetch(`${API_BASE}/api/prototype/status`);
+            const statusData = await statusRes.json();
+            const action = statusData.liveServiceRunning ? 'stop' : 'start';
+            
+            showToast(`${action === 'start' ? 'Starting' : 'Stopping'} Live Service...`);
+            
+            try {
+                const res = await fetch(`${API_BASE}/api/prototype/live`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ action })
+                });
+                const result = await res.json();
+                if (result.status === 'OK') {
+                    showToast(`Service ${action}ed successfully`, 'success');
+                } else {
+                    showToast(`Error: ${result.error}`, 'error');
+                }
+            } catch (err) {
+                console.error('Service toggle error:', err);
+                showToast('Failed to toggle service', 'error');
+            } finally {
+                fetchData();
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.style.borderLeft = `4px solid ${type === 'success' ? 'var(--success)' : type === 'error' ? 'var(--danger)' : 'var(--accent)'}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                toast.style.transition = 'all 0.5s';
+                setTimeout(() => toast.remove(), 500);
+            }, 4000);
+        }
+
+        // Initial fetch
+        fetchData();
+        // Auto refresh
+        setInterval(fetchData, 10000);
+    </script>
+</body>
+</html>

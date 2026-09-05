@@ -1,0 +1,66 @@
+{
+  "research_mode": true,
+  "realistic_paper_mode": true,
+  "live_service_poll_seconds": 300,
+  "allowed_market_regimes": ["regime_trend", "regime_range", "regime_chop"],
+  "blocked_market_regimes": [],
+  "signal_cluster_window_minutes": 60,
+  "account_balance_usd": 10000.0,
+  "risk_pct_per_trade": 0.005,
+  "max_positions_total": 10,
+  "max_positions_per_symbol": 1,
+  "max_hold_minutes": 1440,
+  "paper_entry_decisions": [
+    "BULLISH_TRADE_READY",
+    "BEARISH_TRADE_READY",
+    "BULLISH_WATCH",
+    "BEARISH_WATCH"
+  ],
+  "max_recent_sl_per_thesis_4h": 1,
+  "min_net_risk_reward": 0.5,
+  "max_active_same_thesis": 4,
+  "max_portfolio_risk_pct": 0.03,
+  "max_portfolio_notional_pct": 1.0,
+  "recent_sl_guard_hours": 4,
+  "recent_sl_weight_same_symbol": 2,
+  "max_weighted_sl_per_thesis": 2,
+  "enable_partial_close": true,
+  "partial_close_trigger_pct": 0.5,
+  "partial_close_size_pct": 0.5,
+  "enable_trailing_stop": true,
+  "trailing_stop_trigger_pct": 0.6,
+  "trailing_stop_lock_pct": 0.35,
+  "ignore_superseded_rule": false,
+  "process_only_new_signals": true,
+  "disabled_timeframes": [],
+  "monitor_only_timeframes": [],
+  "market_cost_pct": {
+    "forex": 0.03,
+    "crypto": 0.20
+  },
+  "slippage_pct": {
+    "forex": 0.01,
+    "crypto": 0.05
+  },
+  "symbol_cost_pct": {
+    "EURUSD": 0.02,
+    "GBPUSD": 0.025,
+    "USDJPY": 0.025,
+    "USDCHF": 0.03,
+    "AUDUSD": 0.025,
+    "USDCAD": 0.03,
+    "BTCUSD": 0.22,
+    "ETHUSD": 0.24,
+    "SOLUSD": 0.28,
+    "BNBUSD": 0.25,
+    "XRPUSD": 0.30
+  },
+  "forex_symbol_specs": {
+    "EURUSD": { "pip_size": 0.0001, "pip_value_per_lot_usd": 10.0, "contract_size": 100000 },
+    "GBPUSD": { "pip_size": 0.0001, "pip_value_per_lot_usd": 10.0, "contract_size": 100000 },
+    "USDJPY": { "pip_size": 0.01, "pip_value_per_lot_usd": 9.2, "contract_size": 100000 },
+    "USDCHF": { "pip_size": 0.0001, "pip_value_per_lot_usd": 11.1, "contract_size": 100000 },
+    "AUDUSD": { "pip_size": 0.0001, "pip_value_per_lot_usd": 10.0, "contract_size": 100000 },
+    "USDCAD": { "pip_size": 0.0001, "pip_value_per_lot_usd": 7.3, "contract_size": 100000 }
+  }
+}
