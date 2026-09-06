@@ -117,9 +117,27 @@ def init_database():
                 rsi DECIMAL(6, 2),
                 atr DECIMAL(12, 4),
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                last_scanned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                 UNIQUE KEY uq_symbol_time (symbol, time)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
         """)
+
+        # Existing installations already have market_bars, so CREATE TABLE above
+        # cannot add the new freshness column for them.  Migrate it safely here.
+        cursor.execute("""
+            SELECT COUNT(*) AS column_exists
+            FROM information_schema.COLUMNS
+            WHERE TABLE_SCHEMA = %s
+              AND TABLE_NAME = 'market_bars'
+              AND COLUMN_NAME = 'last_scanned_at'
+        """, (MYSQL_DATABASE,))
+        if cursor.fetchone()["column_exists"] == 0:
+            cursor.execute("""
+                ALTER TABLE market_bars
+                ADD COLUMN last_scanned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                ON UPDATE CURRENT_TIMESTAMP AFTER created_at
+            """)
+            logger.info("เพิ่มคอลัมน์ last_scanned_at ใน market_bars แล้ว")
     conn.close()
     logger.info("✅ ฐานข้อมูล MySQL พร้อมใช้งานสมบูรณ์!")
 
@@ -261,7 +279,11 @@ class AITradingDaemon:
                     cursor.execute("""
                         INSERT INTO market_bars (time, symbol, open, high, low, close, volume, rsi, atr)
                         VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-                        ON DUPLICATE KEY UPDATE close=VALUES(close), volume=VALUES(volume), rsi=VALUES(rsi), atr=VALUES(atr)
+                        ON DUPLICATE KEY UPDATE
+                            open=VALUES(open), high=VALUES(high), low=VALUES(low),
+                            close=VALUES(close), volume=VALUES(volume),
+                            rsi=VALUES(rsi), atr=VALUES(atr),
+                            last_scanned_at=CURRENT_TIMESTAMP
                     """, (row["time"].strftime("%Y-%m-%d %H:%M:%S"), symbol, float(row["open"]), float(row["high"]), float(row["low"]), curr_price, int(row["volume"]), float(row["rsi_14"]), atr))
                 except Exception as e:
                     logger.warning(f"Error saving bar {symbol}: {e}")
