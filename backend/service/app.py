@@ -4,6 +4,7 @@ import time
 import asyncio
 import logging
 from datetime import datetime
+from zoneinfo import ZoneInfo
 import numpy as np
 import pandas as pd
 import joblib
@@ -45,7 +46,9 @@ MYSQL_USER = os.environ.get("MYSQL_USER", "trading_user")
 MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD", "trading_pass_123")
 
 UNIVERSE = ["NVDA", "AMD", "TSLA", "MSFT", "AVGO", "NFLX", "AMZN", "META", "GOOGL", "SPY"]
-SCAN_INTERVAL_MINUTES = int(os.environ.get("SCAN_INTERVAL_MINUTES", "5"))
+# Yahoo Finance is an unofficial data source and aggressively rate-limits bursts.
+# A 15-minute minimum keeps this daemon from repeatedly hitting the same API.
+SCAN_INTERVAL_MINUTES = max(15, int(os.environ.get("SCAN_INTERVAL_MINUTES", "15")))
 CONFIDENCE_THRESHOLD = float(os.environ.get("CONFIDENCE_THRESHOLD", "0.38"))
 TELEGRAM_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN", "")
 TELEGRAM_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID", "")
@@ -143,20 +146,40 @@ class AITradingDaemon:
 
     def fetch_latest_data(self):
         results = {}
+        try:
+            # Request the shared Yahoo session once for the complete universe.
+            # `threads=False` prevents a burst of concurrent requests that can trigger HTTP 429.
+            data = yf.download(
+                tickers=UNIVERSE,
+                period="60d",
+                interval="1d",
+                group_by="ticker",
+                auto_adjust=False,
+                progress=False,
+                threads=False,
+                timeout=20,
+            )
+        except Exception as e:
+            logger.warning(f"ดึงข้อมูลตลาดไม่สำเร็จ: {e}")
+            return results
+
+        if data.empty:
+            logger.warning("Yahoo Finance ไม่ส่งข้อมูลกลับมา; จะรอลองใหม่ในรอบถัดไป")
+            return results
+
         for symbol in UNIVERSE:
             try:
-                data = yf.download(symbol, period="60d", interval="1d", auto_adjust=False, progress=False)
-                if data.empty or len(data) < 30:
+                # With group_by='ticker', each symbol has its own OHLCV frame.
+                df = data[symbol].dropna(how="all").reset_index()
+                if len(df) < 30:
+                    logger.warning(f"ข้อมูล {symbol} ไม่เพียงพอ")
                     continue
-                df = data.reset_index()
-                if isinstance(df.columns, pd.MultiIndex):
-                    df.columns = [col[0] if col[0] else col[1] for col in df.columns]
                 df = df.rename(columns={"Date": "time", "Datetime": "time", "Open": "open", "High": "high", "Low": "low", "Close": "close", "Volume": "volume"})
                 df["time"] = pd.to_datetime(df["time"])
                 df["symbol"] = symbol
                 results[symbol] = df.sort_values("time").reset_index(drop=True)
-            except Exception as e:
-                logger.warning(f"ดึงข้อมูล {symbol} ไม่สำเร็จ: {e}")
+            except (KeyError, TypeError) as e:
+                logger.warning(f"ไม่พบข้อมูล {symbol} ในผลลัพธ์ Yahoo: {e}")
         return results
 
     def calculate_features(self, dfs):
@@ -275,11 +298,15 @@ class AITradingDaemon:
 
         while True:
             try:
-                logger.info(f"[*] เริ่มรอบการสแกนตลาด ({datetime.now().strftime('%Y-%m-%d %H:%M:%S')})...")
-                raw_dfs = self.fetch_latest_data()
-                processed = self.calculate_features(raw_dfs)
-                if processed:
-                    self.evaluate_signals(processed)
+                new_york_now = datetime.now(ZoneInfo("America/New_York"))
+                if new_york_now.weekday() >= 5:
+                    logger.info("ตลาดสหรัฐปิดช่วงสุดสัปดาห์; ข้ามการเรียก Yahoo Finance ในรอบนี้")
+                else:
+                    logger.info(f"[*] เริ่มรอบการสแกนตลาด ({new_york_now.strftime('%Y-%m-%d %H:%M:%S %Z')})...")
+                    raw_dfs = self.fetch_latest_data()
+                    processed = self.calculate_features(raw_dfs)
+                    if processed:
+                        self.evaluate_signals(processed)
                 logger.info(f"[+] รอบการสแกนเสร็จสิ้น หลับพัก {SCAN_INTERVAL_MINUTES} นาที...")
             except Exception as e:
                 logger.error(f"เกิดข้อผิดพลาดในรอบการทำงาน: {e}", exc_info=True)
